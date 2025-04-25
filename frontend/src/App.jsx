@@ -1,6 +1,11 @@
 /** @format */
 import { Layout } from "antd"
+import { useState } from "react"
 import AppHeader from "./components/AppHeader"
+import MainPage from "./components/Pages/MainPage"
+import HistoryPage from "./components/Pages/HistoryPage"
+import StatisticPage from "./components/Pages/StatisticPage"
+import RecommendationsPage from "./components/Pages/RecommendationsPage"
 
 const items = Array.from({ length: 3 }).map((_, index) => ({
     key: String(index + 1),
@@ -8,23 +13,26 @@ const items = Array.from({ length: 3 }).map((_, index) => ({
 }))
 
 function App() {
+    const [page, setPage] = useState("main")
+
     return (
         <>
             <Layout>
-                <AppHeader />
-                <Layout.Content>
-                    <div
-                        style={{
-                            padding: 24,
-                            minHeight: 380,
-                        }}>
-                        Content
-                    </div>
+                <AppHeader currentPage={page} onPageChange={setPage} />
+
+                <Layout.Content
+                    style={{
+                        padding: 24,
+                        minHeight: 380,
+                        background: "#fff"
+                    }}>
+                    {page === "main" && <MainPage />}
+                    {page === "history" && <HistoryPage />}
+                    {page === "statistic" && <StatisticPage />}
+                    {page === "recommendations" && <RecommendationsPage />}
                 </Layout.Content>
 
-                <Layout.Footer style={{ textAlign: "center" }}>
-                    Ant Design ©{new Date().getFullYear()} Created by Ant UED
-                </Layout.Footer>
+                <Layout.Footer style={{ textAlign: "center" }}>Created by command Dark Mode</Layout.Footer>
             </Layout>
         </>
     )

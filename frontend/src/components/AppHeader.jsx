@@ -1,10 +1,11 @@
 /** @format */
 import { React, useState, useRef } from "react"
-import { Layout, Button, Drawer } from "antd"
+import { Layout, Button, Drawer, Image } from "antd"
 import { CameraOutlined } from "@ant-design/icons"
+import logo from "/logo-name.svg"
 import Webcam from "react-webcam"
 
-export default function AppHeader() {
+export default function AppHeader({ onPageChange }) {
     const [drawer, setDrawer] = useState(false)
     const [showCamera, setShowCamera] = useState(false)
     const webcamRef = useRef(null)
@@ -15,6 +16,11 @@ export default function AppHeader() {
             console.log(photo) // base64-строка
             setShowCamera(false) // Закрываем камеру после съёмки
         }
+    }
+
+    function menuClick(type) {
+        onPageChange(type)
+        setDrawer(false)
     }
 
     return (
@@ -28,22 +34,92 @@ export default function AppHeader() {
                 alignItems: "center",
                 background: "#fff",
                 padding: 10,
-                height: "6vh",
+                height: "7vh",
                 justifyContent: "space-between",
             }}>
-            <Button
-                type="round"
-                onClick={() => setShowCamera(true)}
-                style={{ border: "1px solid black" }}
-                size="large"
-                icon={<CameraOutlined />}></Button>
-            <Button type="primary" onClick={() => setDrawer(true)}>
-                Меню
-            </Button>
+            <Image
+                src={logo}
+                style={{
+                    display: "block",
+                    alignSelf: "center",
+                }}
+                preview={false}
+                width={120}
+                height={32}
+                alt="Логотип"
+            />
 
-            <Drawer title="Basic Drawer" onClose={() => setDrawer(false)} open={drawer}>
-                <Button type="text" block>
-                    text
+            <div>
+                <Button
+                    type="round"
+                    onClick={() => setShowCamera(true)}
+                    style={{ border: "1px solid black", marginRight: "20px" }}
+                    size="large"
+                    icon={<CameraOutlined />}
+                />
+                <Button type="primary" onClick={() => setDrawer(true)}>
+                    Меню
+                </Button>
+            </div>
+
+            <Drawer title="Вкладки" onClose={() => setDrawer(false)} open={drawer}>
+                <Button
+                    style={{
+                        borderBottom: "1px solid black",
+                        borderRadius: 0,
+                        height: "7vh",
+                        WebkitTapHighlightColor: "transparent",
+                    }}
+                    type="text"
+                    block
+                    onClick={() => menuClick("main")}>
+                    Главная
+                </Button>
+                <Button
+                    style={{
+                        borderBottom: "1px solid black",
+                        borderRadius: 0,
+                        height: "7vh",
+                        WebkitTapHighlightColor: "transparent",
+                    }}
+                    type="text"
+                    block
+                    onClick={() => {
+                        setShowCamera(true)
+                        setDrawer(false)
+                    }}>
+                    Сканировать чек
+                </Button>
+                <Button
+                    style={{
+                        borderBottom: "1px solid black",
+                        borderRadius: 0,
+                        height: "7vh",
+                        WebkitTapHighlightColor: "transparent",
+                    }}
+                    type="text"
+                    block
+                    onClick={() => menuClick("history")}>
+                    История чеков
+                </Button>
+                <Button
+                    style={{
+                        borderBottom: "1px solid black",
+                        borderRadius: 0,
+                        height: "7vh",
+                        WebkitTapHighlightColor: "transparent",
+                    }}
+                    type="text"
+                    block
+                    onClick={() => menuClick("statistic")}>
+                    Статистика расходов
+                </Button>
+                <Button
+                    style={{ borderRadius: 0, height: "7vh", WebkitTapHighlightColor: "transparent" }}
+                    type="text"
+                    block
+                    onClick={() => menuClick("recommendations")}>
+                    Рекомендации
                 </Button>
             </Drawer>
 
