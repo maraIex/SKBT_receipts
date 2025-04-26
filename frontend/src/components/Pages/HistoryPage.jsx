@@ -39,8 +39,12 @@ export default function HistoryPage({ receipts, onBack, onShowStats }) {
         <div style={{ padding: "0 16px" }}>
             <Row style={{ marginBottom: "16px" }}>
                 <Col span={24}>
-                    <Button type="text" icon={<HistoryOutlined />} onClick={onBack}>
-                        Назад к статистике
+                    <Button
+                        type="text"
+                        icon={<HistoryOutlined />}
+                        onClick={onBack}
+                        style={{ background: colors.white }}>
+                        Назад на главную
                     </Button>
                 </Col>
             </Row>
@@ -69,7 +73,7 @@ export default function HistoryPage({ receipts, onBack, onShowStats }) {
                                     ? cardStyles.partner
                                     : cardStyles.regular),
                             }}
-                            bodyStyle={cardStyles.cardBody}
+                            styles={{ body: cardStyles.cardBody }}
                             size="small">
                             <Row gutter={8}>
                                 <Col flex="none">
