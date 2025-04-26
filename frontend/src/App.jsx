@@ -6,7 +6,6 @@ import MainPage from "./components/Pages/MainPage"
 import HistoryPage from "./components/Pages/HistoryPage"
 import StatisticPage from "./components/Pages/StatisticPage"
 import RecommendationsPage from "./components/Pages/RecommendationsPage"
-import { mockReceipts } from "./receipts"
 
 function App() {
     const [page, setPage] = useState("main")
@@ -25,7 +24,7 @@ function App() {
                 {page === "main" && (
                     <MainPage onNavigate={setPage} showCamera={showCamera} setShowCamera={setShowCamera} />
                 )}
-                {page === "history" && <HistoryPage receipts={mockReceipts} onBack={() => setPage("main")} />}
+                {page === "history" && <HistoryPage />}
                 {page === "statistic" && <StatisticPage />}
                 {page === "recommendations" && <RecommendationsPage onBack={() => setPage("main")} />}
             </Layout.Content>
