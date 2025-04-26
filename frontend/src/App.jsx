@@ -6,7 +6,7 @@ import MainPage from "./components/Pages/MainPage"
 import HistoryPage from "./components/Pages/HistoryPage"
 import StatisticPage from "./components/Pages/StatisticPage"
 import RecommendationsPage from "./components/Pages/RecommendationsPage"
-import { mockReceipts } from './receipts';
+import { mockReceipts } from "./receipts"
 
 function App() {
     const [page, setPage] = useState("main")
@@ -14,35 +14,21 @@ function App() {
 
     return (
         <Layout>
-            <AppHeader 
-                currentPage={page} 
+            <AppHeader
+                currentPage={page}
                 onPageChange={setPage}
+                showCamera={showCamera}
                 setShowCamera={setShowCamera}
             />
 
             <Layout.Content style={{ padding: 0, background: "#fff" }}>
                 {page === "main" && (
-                    <MainPage 
-                        onNavigate={setPage}
-                        showCamera={showCamera}
-                        setShowCamera={setShowCamera}
-                    />
+                    <MainPage onNavigate={setPage} showCamera={showCamera} setShowCamera={setShowCamera} />
                 )}
-                {page === "history" && (
-                    <HistoryPage 
-                        receipts={mockReceipts} 
-                        onBack={() => setPage("main")}
-                    />
-                )}
+                {page === "history" && <HistoryPage receipts={mockReceipts} onBack={() => setPage("main")} />}
                 {page === "statistic" && <StatisticPage />}
-                {page === "recommendations" && (
-                    <RecommendationsPage onBack={() => setPage("main")} />
-                )}
+                {page === "recommendations" && <RecommendationsPage onBack={() => setPage("main")} />}
             </Layout.Content>
-
-            <Layout.Footer style={{ textAlign: "center" }}>
-                Created by Dark Mode
-            </Layout.Footer>
         </Layout>
     )
 }

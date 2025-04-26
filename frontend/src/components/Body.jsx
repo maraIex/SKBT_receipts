@@ -1,31 +1,19 @@
 /** @format */
 import { Card, Row, Col, Statistic, List, Button } from "antd"
-import { PieChartOutlined, ShoppingCartOutlined, ScanOutlined, HistoryOutlined } from "@ant-design/icons"
-import { useState, useRef } from "react"
-import HistoryPage from "./Pages/HistoryPage"
-import { colors } from "../colors"
+import { ShoppingCartOutlined, ScanOutlined, HistoryOutlined } from "@ant-design/icons"
+import Camera from "./Camera"
 import { mockReceipts } from '../receipts';
-import Webcam from "react-webcam"
 
-export const Body = ({ 
+export const Body = ({
     totalSpending,
     topCategories,
     onShowHistory,
     onShowStatistics,
     showCamera,
-    setShowCamera
+    setShowCamera,
 }) => {
     //const [showCamera, setShowCamera] = useState(false);
-    const webcamRef = useRef(null);
-    const scannedReceiptsCount = mockReceipts.length; // Добавлено определение
-
-    const capturePhoto = () => {
-        if (webcamRef.current) {
-            const photo = webcamRef.current.getScreenshot()
-            console.log(photo) // base64-строка
-            setShowCamera(false) // Закрываем камеру после съёмки
-        }
-    }
+    const scannedReceiptsCount = mockReceipts.length
 
     const handleShowStats = (receiptId) => {
         console.log("Показать статистику для чека:", receiptId)
@@ -35,7 +23,7 @@ export const Body = ({
     return (
         <>
             {/* Основной контент */}
-            <Row gutter={[16, 16]} style={{ marginBottom: '20px' }}>
+            <Row gutter={[16, 16]} style={{ marginBottom: "20px" }}>
                 <Col span={24}>
                     <Card title="Общая статистика">
                         <Row gutter={16}>
@@ -48,10 +36,7 @@ export const Body = ({
                                 />
                             </Col>
                             <Col span={12}>
-                                <div 
-                                    onClick={onShowStatistics}
-                                    style={{ cursor: 'pointer' }}
-                                >
+                                <div onClick={onShowStatistics} style={{ cursor: "pointer" }}>
                                     <Statistic
                                         title="Отсканировано чеков"
                                         value={scannedReceiptsCount}
@@ -99,77 +84,14 @@ export const Body = ({
                         type="default"
                         size="large"
                         icon={<HistoryOutlined />}
-                        onClick={onShowHistory}  // Используем переданный колбэк
+                        onClick={onShowHistory} // Используем переданный колбэк
                         block>
                         История
                     </Button>
                 </Col>
             </Row>
 
-            {/* Модальное окно камеры */}
-            {showCamera && (
-                <div style={{
-                    position: "fixed",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    backgroundColor: "rgba(0,0,0,0.9)",
-                    zIndex: 1000,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}>
-                    <Webcam
-                        ref={webcamRef}
-                        audio={false}
-                        screenshotFormat="image/jpeg"
-                        style={{ maxWidth: "100%" }}
-                    />
-                    <div style={{ marginTop: 20 }}>
-                        <Button onClick={capturePhoto} type="primary">
-                            Сделать фото
-                        </Button>
-                        <Button 
-                            onClick={() => setShowCamera(false)} 
-                            style={{ marginLeft: 10 }}>
-                            Отмена
-                        </Button>
-                    </div>
-                </div>
-            )}
-            {showCamera && (
-                <div
-                    style={{
-                        position: "fixed",
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        backgroundColor: "rgba(0,0,0,0.9)",
-                        zIndex: 1000,
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                    }}>
-                    <Webcam
-                        ref={webcamRef}
-                        audio={false}
-                        screenshotFormat="image/jpeg"
-                        style={{ maxWidth: "100%" }}
-                    />
-                    <div style={{ marginTop: 20 }}>
-                        <Button onClick={capturePhoto} type="primary">
-                            Сделать фото
-                        </Button>
-                        <Button onClick={() => setShowCamera(false)} style={{ marginLeft: 10 }}>
-                            Отмена
-                        </Button>
-                    </div>
-                </div>
-            )}
+            {showCamera && <Camera setShowCamera={setShowCamera} />}
         </>
-    );
-};
+    )
+}
