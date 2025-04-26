@@ -22,6 +22,7 @@ const contentStyle = {
     textAlign: "center",
     minHeight: "calc(100vh - 120px)",
     color: "#fff",
+    padding: "20px",
     backgroundColor: "#0958d9",
 }
 const footerStyle = {

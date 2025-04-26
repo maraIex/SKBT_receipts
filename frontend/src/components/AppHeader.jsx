@@ -4,7 +4,7 @@ import { Layout, Button, Drawer, Image } from "antd"
 import { HomeOutlined, ScanOutlined, HistoryOutlined, PieChartOutlined } from "@ant-design/icons"
 import logo from "/logo-name.svg"
 
-export default function AppHeader({ onPageChang, setShowCamera   }) {
+export default function AppHeader({ onPageChange, setShowCamera   }) {
     const [drawer, setDrawer] = useState(false)
 
     function menuClick(type) {

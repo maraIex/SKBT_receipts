@@ -1,10 +1,11 @@
 /** @format */
-import { Card, Row, Col, Statistic, List, Button } from "antd";
-import { ShoppingCartOutlined, ScanOutlined, HistoryOutlined } from "@ant-design/icons";
-import { useState, useRef } from "react";
-import Webcam from "react-webcam";
+import { Card, Row, Col, Statistic, List, Button } from "antd"
+import { PieChartOutlined, ShoppingCartOutlined, ScanOutlined, HistoryOutlined } from "@ant-design/icons"
+import { useState, useRef } from "react"
+import HistoryPage from "./Pages/HistoryPage"
+import { colors } from "../colors"
 import { mockReceipts } from '../receipts';
-import { colors } from "../colors";
+import Webcam from "react-webcam"
 
 export const Body = ({ 
     totalSpending,
@@ -20,11 +21,16 @@ export const Body = ({
 
     const capturePhoto = () => {
         if (webcamRef.current) {
-            const photo = webcamRef.current.getScreenshot();
-            console.log(photo);
-            setShowCamera(false);
+            const photo = webcamRef.current.getScreenshot()
+            console.log(photo) // base64-строка
+            setShowCamera(false) // Закрываем камеру после съёмки
         }
-    };
+    }
+
+    const handleShowStats = (receiptId) => {
+        console.log("Показать статистику для чека:", receiptId)
+        // Здесь можно открыть модальное окно с диаграммой
+    }
 
     return (
         <>
@@ -128,6 +134,37 @@ export const Body = ({
                         <Button 
                             onClick={() => setShowCamera(false)} 
                             style={{ marginLeft: 10 }}>
+                            Отмена
+                        </Button>
+                    </div>
+                </div>
+            )}
+            {showCamera && (
+                <div
+                    style={{
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: "rgba(0,0,0,0.9)",
+                        zIndex: 1000,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}>
+                    <Webcam
+                        ref={webcamRef}
+                        audio={false}
+                        screenshotFormat="image/jpeg"
+                        style={{ maxWidth: "100%" }}
+                    />
+                    <div style={{ marginTop: 20 }}>
+                        <Button onClick={capturePhoto} type="primary">
+                            Сделать фото
+                        </Button>
+                        <Button onClick={() => setShowCamera(false)} style={{ marginLeft: 10 }}>
                             Отмена
                         </Button>
                     </div>
