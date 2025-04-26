@@ -3,6 +3,7 @@ import { Card, Row, Col, Statistic, List, Button } from "antd";
 import { PieChartOutlined, ShoppingCartOutlined, ScanOutlined, HistoryOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { History } from "./History";
+import { colors } from '../theme/colors';
 
 const mockReceipts = [
   {
@@ -28,7 +29,7 @@ const mockReceipts = [
   },
   {
     id: 4,
-    store: "Starbucks",
+    store: "Coffee Like",
     date: "2025-03-10",
     amount: 560,
     isPartner: false

@@ -1,11 +1,12 @@
 /** @format */
-import { Card, List, Button, Tag, Row, Col } from "antd";
+import { Card, List, Button, Tag, Row, Col, Space } from "antd";
 import { 
   ShopOutlined, 
   CalendarOutlined, 
   PieChartOutlined,
   HistoryOutlined 
 } from "@ant-design/icons";
+import { colors } from '../theme/colors';
 
 const PARTNER_STORES = ["Пятёрочка", "Магнит", "Лента", "Перекрёсток"];
 
@@ -13,7 +14,7 @@ export const History = ({ receipts, onBack, onShowStats }) => {
   // Стили для карточек
   const cardStyles = {
     partner: {
-      borderLeft: '4px solid #52c41a',
+      borderLeft: `4px solid ${colors.muted_green}`,
       backgroundColor: '#f6ffed',
     },
     regular: {
@@ -21,6 +22,22 @@ export const History = ({ receipts, onBack, onShowStats }) => {
     },
     cardBody: {
       padding: '12px'
+    },
+    titleContainer: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      width: '100%'
+    },
+    leftTitle: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px'
+    },
+    amountText: {
+      fontWeight: 'bold',
+      minWidth: '80px',
+      textAlign: 'right'
     }
   };
 
@@ -44,10 +61,17 @@ export const History = ({ receipts, onBack, onShowStats }) => {
           <List.Item style={{ padding: '4px 0' }}>
             <Card 
               title={
-                <Row justify="space-between" align="middle">
-                  <Col>Чек №{receipt.id}</Col>
-                  <Col style={{ fontWeight: 'bold' }}>{receipt.amount} ₽</Col>
-                </Row>
+                <div style={cardStyles.titleContainer}>
+                  <div style={cardStyles.leftTitle}>
+                    <span>Чек №{receipt.id}</span>
+                    {PARTNER_STORES.includes(receipt.store) && (
+                      <Tag color="success" style={{ margin: 0 }}>Партнёр</Tag>
+                    )}
+                  </div>
+                  <span style={cardStyles.amountText}>
+                    {receipt.amount} ₽
+                  </span>
+                </div>
               }
               style={{
                 width: '100%',
@@ -56,9 +80,6 @@ export const History = ({ receipts, onBack, onShowStats }) => {
                   : cardStyles.regular)
               }}
               bodyStyle={cardStyles.cardBody}
-              extra={PARTNER_STORES.includes(receipt.store) && (
-                <Tag color="success" style={{ marginLeft: 8 }}>Партнёр</Tag>
-              )}
               size="small"
             >
               <Row gutter={8}>
