@@ -7,13 +7,8 @@ import HistoryPage from "./components/Pages/HistoryPage"
 import StatisticPage from "./components/Pages/StatisticPage"
 import RecommendationsPage from "./components/Pages/RecommendationsPage"
 
-const items = Array.from({ length: 3 }).map((_, index) => ({
-    key: String(index + 1),
-    label: `nav ${index + 1}`,
-}))
-
 function App() {
-    const [page, setPage] = useState("main")
+    const [page, setPage] = useState("statistic")
 
     return (
         <>
@@ -24,7 +19,7 @@ function App() {
                     style={{
                         padding: 24,
                         minHeight: 380,
-                        background: "#fff"
+                        background: "#fff",
                     }}>
                     {page === "main" && <MainPage />}
                     {page === "history" && <HistoryPage />}

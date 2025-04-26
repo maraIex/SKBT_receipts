@@ -1,5 +1,5 @@
 /** @format */
-import { React, useState, useRef } from "react"
+import { useState, useRef } from "react"
 import { Layout, Button, Drawer, Image } from "antd"
 import { CameraOutlined } from "@ant-design/icons"
 import logo from "/logo-name.svg"
