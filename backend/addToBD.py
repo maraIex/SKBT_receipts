@@ -48,7 +48,7 @@ class ReceiptModel(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     operation_date: Mapped[datetime] = mapped_column(TIMESTAMP)
-    shop_id: Mapped[int] = mapped_column(ForeignKey("Shop.shop_id"))
+    shop_id: Mapped[int] = mapped_column(ForeignKey("Shops.shop_id"))
 
 
 class ReceiptItemModel(Base):
