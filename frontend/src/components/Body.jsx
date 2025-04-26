@@ -2,16 +2,10 @@
 import { Card, Row, Col, Statistic, List, Button } from "antd"
 import { ShoppingCartOutlined, ScanOutlined, HistoryOutlined } from "@ant-design/icons"
 import Camera from "./Camera"
-import { mockReceipts } from '../receipts';
+import { mockReceipts } from "../receipts"
+import { topThreeCategories, totalСost } from "../data"
 
-export const Body = ({
-    totalSpending,
-    topCategories,
-    onShowHistory,
-    onShowStatistics,
-    showCamera,
-    setShowCamera,
-}) => {
+export const Body = ({ onShowHistory, onShowStatistics, showCamera, setShowCamera }) => {
     //const [showCamera, setShowCamera] = useState(false);
     const scannedReceiptsCount = mockReceipts.length
 
@@ -30,7 +24,7 @@ export const Body = ({
                             <Col span={12}>
                                 <Statistic
                                     title="Траты за месяц"
-                                    value={totalSpending}
+                                    value={totalСost}
                                     precision={0}
                                     suffix="₽"
                                 />
@@ -53,13 +47,13 @@ export const Body = ({
                 <Col span={24}>
                     <Card title="Топ-3 категории">
                         <List
-                            dataSource={topCategories}
+                            dataSource={topThreeCategories}
                             renderItem={(item) => (
                                 <List.Item>
                                     <List.Item.Meta
                                         avatar={<ShoppingCartOutlined />}
-                                        title={item.name}
-                                        description={`${item.amount} ₽`}
+                                        title={item.categoryName}
+                                        description={`${item.value} ₽`}
                                     />
                                 </List.Item>
                             )}
@@ -73,6 +67,7 @@ export const Body = ({
                     <Button
                         type="primary"
                         size="large"
+                        style={{ WebkitTapHighlightColor: "transparent" }}
                         icon={<ScanOutlined />}
                         onClick={() => setShowCamera(true)}
                         block>
@@ -83,6 +78,7 @@ export const Body = ({
                     <Button
                         type="default"
                         size="large"
+                        style={{ WebkitTapHighlightColor: "transparent" }}
                         icon={<HistoryOutlined />}
                         onClick={onShowHistory} // Используем переданный колбэк
                         block>

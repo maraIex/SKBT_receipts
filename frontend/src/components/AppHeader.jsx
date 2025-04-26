@@ -44,6 +44,7 @@ export default function AppHeader({ onPageChange, setShowCamera, showCamera }) {
                         display: "block",
                         alignSelf: "center",
                         cursor: "pointer", // Добавляем указатель при наведении
+                        WebkitTapHighlightColor: "transparent",
                     }}
                     preview={false}
                     width={120}
@@ -65,6 +66,7 @@ export default function AppHeader({ onPageChange, setShowCamera, showCamera }) {
                             justifyContent: "center",
                             border: "none",
                             boxShadow: "none",
+                            WebkitTapHighlightColor: "transparent",
                         }}>
                         <MenuOutlined
                             style={{
