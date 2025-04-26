@@ -25,6 +25,7 @@ class ShopModel(Base):
     shop_id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     is_partner: Mapped[bool] = mapped_column(Boolean, default=False)
+    category: Mapped[str] = mapped_column(String(100), nullable=True)
 
 class CategoryModel(Base):
     __tablename__ = "Categories"
@@ -137,6 +138,7 @@ async def get_partners(session: AsyncSession = Depends(get_session)):
         partners.append({
             "shop_id": shop.shop_id,
             "name": shop.name,
+            "category": shop.category
         })
     return partners
 
