@@ -12,6 +12,7 @@ export const productData = [
 // Расчёты
 export const totalСost = calculateTotalCost(productData)
 export const totalCostByCategory = calculateCostByCategory(productData, totalСost)
+export const topThreeCategories = getTopThreeCategories(totalCostByCategory)
 
 // Внутренние данные
 export const chartColors = [
@@ -52,4 +53,11 @@ function calculateCostByCategory(products, totalCost) {
         value: cost,
         percentageOfTotal: totalCost > 0 ? Math.round((cost / totalCost) * 100) : 0,
     }))
+}
+
+// Функция вычисления категорий с самым большим процентом трат
+function getTopThreeCategories(data) {
+    const sorted = [...data].sort((a, b) => b.percentageOfTotal - a.percentageOfTotal)
+
+    return sorted.slice(0, 3)
 }
