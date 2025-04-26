@@ -1,32 +1,12 @@
 import cv2
 import numpy as np
 import pytesseract
-import easyocr
 import re
 import threading
-from functools import lru_cache
 
 # ========== ГЛОБАЛЬНЫЕ НАСТРОЙКИ ========== #
 # Укажите путь к Tesseract (если требуется)
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-
-# Инициализация EasyOCR один раз при загрузке модуля
-EASYOCR_READER = None
-EASYOCR_LOCK = threading.Lock()
-
-
-def initialize_easyocr(langs=['ru', 'en']):
-    """Инициализация EasyOCR с блокировкой для потокобезопасности"""
-    global EASYOCR_READER
-    with EASYOCR_LOCK:
-        if EASYOCR_READER is None:
-            EASYOCR_READER = easyocr.Reader(langs)
-    return EASYOCR_READER
-
-
-# Предварительная инициализация при импорте
-initialize_easyocr()
-
 
 # ========== ОСНОВНЫЕ ФУНКЦИИ ========== #
 def four_point_transform(image, pts):
@@ -52,7 +32,6 @@ def four_point_transform(image, pts):
     M = cv2.getPerspectiveTransform(rect, dst)
     warped = cv2.warpPerspective(image, M, (maxWidth, maxHeight))
     return warped
-
 
 def order_points(pts):
     """Упорядочивает 4 точки."""
@@ -154,27 +133,11 @@ def ocr_core(image):
         tess_text = pytesseract.image_to_string(
             image,
             config=tess_config,
-            timeout=10  # Защита от зависаний
+            timeout=30  # Защита от зависаний
         )
         results.extend(tess_text.split('\n'))
     except Exception as e:
         print(f"Ошибка Tesseract: {e}")
-
-    # EasyOCR с расширенными параметрами
-    try:
-        with EASYOCR_LOCK:
-            if EASYOCR_READER:
-                easy_text = EASYOCR_READER.readtext(
-                    image,
-                    detail=0,
-                    paragraph=True,
-                    text_threshold=0.7,  # Повышение точности
-                    allowlist='0123456789.,-₽рРуб$€йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ',
-                    batch_size=4  # Оптимизация для CPU
-                )
-                results.extend(easy_text)
-    except Exception as e:
-        print(f"Ошибка EasyOCR: {e}")
 
     # Расширенная постобработка
     processed = []
@@ -204,47 +167,6 @@ def clean_text(text):
     return cleaned
 
 
-@lru_cache(maxsize=100)
-# ========== ВАЛИДАЦИЯ ========== #
-def find_dates(text):
-    """Улучшенный поиск дат с валидацией"""
-    date_patterns = [
-        r'\b(0[1-9]|[12][0-9]|3[01])[./-](0[1-9]|1[0-2])[./-](20\d{2})\b',  # DD.MM.YYYY
-        r'\b(20\d{2})[./-](0[1-9]|1[0-2])[./-](0[1-9]|[12][0-9]|3[01])\b'  # YYYY-MM-DD
-    ]
-
-    dates = []
-    for pattern in date_patterns:
-        for match in re.findall(pattern, text):
-            try:
-                day, month, year = map(int, match)
-                if 1 <= day <= 31 and 1 <= month <= 12:
-                    dates.append(f"{day:02d}.{month:02d}.{year}")
-            except:
-                continue
-    return list(set(dates))
-
-
-def find_amounts(text):
-    """Контекстный поиск сумм"""
-    patterns = [
-        r'(?i)(?:итого|всего|сумма|оплата)\s*[=:]\s*([\d\s,]+)\s*[₽р]',
-        r'\d+\s*[xх×]\s*\d+[\d,]*\s*=\s*(\d+[\d,]*)'
-    ]
-
-    amounts = []
-    for pattern in patterns:
-        for match in re.findall(pattern, text):
-            cleaned = match.replace(' ', '').replace(',', '.')
-            try:
-                amount = float(cleaned)
-                if 10 <= amount <= 1000000:  # Фильтр по разумному диапазону
-                    amounts.append(amount)
-            except:
-                continue
-    return list(set(amounts))
-
-
 # ========== ГЛАВНАЯ ФУНКЦИЯ ========== #
 def process_receipt(image_path, ocr_engine='easyocr'):
     try:
@@ -260,17 +182,9 @@ def process_receipt(image_path, ocr_engine='easyocr'):
 
         # 4. Очистка текста
         cleaned_text = clean_text(raw_text)
-
-        # 5. Валидация
-        dates = find_dates(cleaned_text)
-        amounts = find_amounts(cleaned_text)
-
         return {
             'processed_image': output_path,
-            'raw_text': raw_text,
             'cleaned_text': cleaned_text,
-            'dates': dates,
-            'amounts': amounts
         }
 
     except Exception as e:
@@ -278,30 +192,6 @@ def process_receipt(image_path, ocr_engine='easyocr'):
         return {
             'error': str(e),
             'processed_image': None,
-            'raw_text': None,
             'cleaned_text': None,
-            'dates': [],
-            'amounts': []
         }
 
-
-# ========== ЗАПУСК ========== #
-if __name__ == "__main__":
-    # Пример использования в многопоточной среде
-    import concurrent.futures
-
-
-    def process_single(file_path):
-        result = process_receipt(file_path)
-        print(f"\nРезультат для {file_path}:", result)
-
-
-    # Обработка нескольких чеков параллельно
-    files = [
-        r"C:\Users\User\Desktop\test_1.jpg",
-        r"C:\Users\User\Desktop\test_2.jpg",
-        r"C:\Users\User\Desktop\test_3.jpg"
-    ]
-
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        executor.map(process_single, files)
