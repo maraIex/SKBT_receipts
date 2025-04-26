@@ -1,11 +1,13 @@
 /** @format */
-import { Card, List, Button, Tag, Row, Col } from "antd"
-import { ShopOutlined, CalendarOutlined, PieChartOutlined, HistoryOutlined } from "@ant-design/icons"
+import { Card, List, Button, Tag, Row, Col, Modal, Divider } from "antd"
+import { ShopOutlined, CalendarOutlined, PieChartOutlined } from "@ant-design/icons"
 import { colors } from "../../colors"
+import { receipts, PARTNER_STORES } from "../../data"
+import { useState } from "react"
 
-const PARTNER_STORES = ["Пятёрочка", "Магнит", "Лента", "Перекрёсток"]
-
-export default function HistoryPage({ receipts, onBack, onShowStats }) {
+export default function HistoryPage() {
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [selectedReceipt, setSelectedReceipt] = useState(null)
     const cardStyles = {
         partner: {
             borderLeft: `4px solid ${colors.muted_green}`,
@@ -37,18 +39,6 @@ export default function HistoryPage({ receipts, onBack, onShowStats }) {
 
     return (
         <div style={{ padding: "0 16px" }}>
-            <Row style={{ marginBottom: "16px" }}>
-                <Col span={24}>
-                    <Button
-                        type="text"
-                        icon={<HistoryOutlined />}
-                        onClick={onBack}
-                        style={{ background: colors.white }}>
-                        Назад на главную
-                    </Button>
-                </Col>
-            </Row>
-
             <List
                 dataSource={receipts}
                 renderItem={(receipt) => (
@@ -90,18 +80,98 @@ export default function HistoryPage({ receipts, onBack, onShowStats }) {
                             <Button
                                 type="link"
                                 icon={<PieChartOutlined />}
-                                onClick={() => onShowStats(receipt.id)}
+                                onClick={() => {
+                                    setIsModalOpen(true)
+                                    setSelectedReceipt(receipt) // Исправлено: было setSelectedReceipt
+                                }}
                                 style={{
                                     padding: "0",
                                     height: "auto",
                                     marginTop: "8px",
                                 }}>
-                                Посмотреть статистику
+                                Подробнее о чеке
                             </Button>
                         </Card>
                     </List.Item>
                 )}
             />
+
+            {/* Модальное окно вынесено за пределы List */}
+            <Modal
+                closeIcon={false}
+                title={
+                    <span style={{ fontSize: "24px", display: "flex", alignItems: "center" }}>
+                        Чек №{selectedReceipt?.id || ""}
+                        {PARTNER_STORES.includes(selectedReceipt?.store) && (
+                            <Tag
+                                color="success"
+                                style={{
+                                    marginLeft: "12px",
+                                    fontSize: "16px",
+                                    padding: "4px 8px",
+                                    height: "auto",
+                                }}>
+                                Партнёр
+                            </Tag>
+                        )}
+                    </span>
+                }
+                open={isModalOpen}
+                onOk={() => setIsModalOpen(false)}
+                footer={[
+                    <Button
+                        key="ok"
+                        type="primary"
+                        onClick={() => setIsModalOpen(false)}
+                        style={{ width: "100%" }}>
+                        Закрыть
+                    </Button>,
+                ]}>
+                {selectedReceipt && (
+                    <>
+                        <div style={{ marginBottom: "16px" }}>
+                            <p style={{ fontSize: "16px" }}>
+                                <strong>Магазин:</strong> {selectedReceipt.store}
+                            </p>
+
+                            <Divider style={{ margin: "16px 0" }} />
+
+                            <div>
+                                <h4 style={{ fontSize: "18px", marginBottom: "12px" }}>Купленные товары:</h4>
+                                <ul
+                                    style={{
+                                        margin: 0,
+                                        paddingLeft: "20px",
+                                        listStyleType: "none",
+                                    }}>
+                                    {selectedReceipt.products.map((product, index) => (
+                                        <li
+                                            key={index}
+                                            style={{
+                                                fontSize: "16px",
+                                                margin: "8px 0",
+                                                display: "flex",
+                                                alignItems: "center",
+                                            }}>
+                                            <span style={{ marginRight: "8px" }}>•</span>
+                                            {product}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            <Divider style={{ margin: "0" }} />
+
+                            <p style={{ fontSize: "16px", margin: "8px 0" }}>
+                                <strong>Сумма:</strong> {selectedReceipt.amount.toLocaleString()} ₽
+                            </p>
+                            <p style={{ fontSize: "16px", margin: "8px 0" }}>
+                                <strong>Дата:</strong> {new Date(selectedReceipt.date).toLocaleDateString()}
+                            </p>
+                        </div>
+                    </>
+                )}
+            </Modal>
         </div>
     )
 }

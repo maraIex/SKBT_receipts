@@ -2,12 +2,11 @@
 import { Card, Row, Col, Statistic, List, Button } from "antd"
 import { ShoppingCartOutlined, ScanOutlined, HistoryOutlined } from "@ant-design/icons"
 import Camera from "./Camera"
-import { mockReceipts } from "../receipts"
-import { topThreeCategories, totalСost } from "../data"
+import { topThreeCategories, totalСost, receipts } from "../data"
 
 export const Body = ({ onShowHistory, onShowStatistics, showCamera, setShowCamera }) => {
     //const [showCamera, setShowCamera] = useState(false);
-    const scannedReceiptsCount = mockReceipts.length
+    const scannedReceiptsCount = receipts.length
 
     const handleShowStats = (receiptId) => {
         console.log("Показать статистику для чека:", receiptId)

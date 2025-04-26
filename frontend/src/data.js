@@ -1,5 +1,40 @@
 /** @format */
 // Эмуляция данных полученных с БД
+export const receipts = [
+    {
+        id: 1,
+        products: ["Хлеб", "Чай Greenfield"],
+        store: "Пятёрочка",
+        date: "2025-03-15",
+        amount: 2450,
+        isPartner: true,
+    },
+    {
+        id: 2,
+        products: ["Игровая мышь", "Коврик для мыши"],
+        store: "DNS",
+        date: "2025-03-14",
+        amount: 18990,
+        isPartner: false,
+    },
+    {
+        id: 3,
+        products: ["Молоко", "Яйца", "Сахар"],
+        store: "Магнит",
+        date: "2025-03-12",
+        amount: 870,
+        isPartner: true,
+    },
+    {
+        id: 4,
+        products: ["Капучино", "Круассан"],
+        store: "Coffee Like",
+        date: "2025-03-10",
+        amount: 560,
+        isPartner: false,
+    },
+]
+
 export const productData = [
     { name: "Суп яичный", category: "Рестораны", cost: "50", quantity: "1" },
     { name: "Мясо по-французски", category: "Рестораны", cost: "130", quantity: "1" },
@@ -8,6 +43,8 @@ export const productData = [
     { name: "Нурофен", category: "Медицина", cost: "110", quantity: "1" },
     { name: "Яндекс Плюс", category: "Хобби и развлечения", cost: "399", quantity: "1" },
 ]
+
+export const PARTNER_STORES = ["Пятёрочка", "Магнит", "Лента", "Перекрёсток"]
 
 // Расчёты
 export const totalСost = calculateTotalCost(productData)
