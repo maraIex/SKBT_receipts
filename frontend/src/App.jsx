@@ -1,6 +1,6 @@
 /** @format */
 import { Layout } from "antd"
-import { useState } from "react"
+import React, { useEffect, useState } from "react"
 import AppHeader from "./components/AppHeader"
 import MainPage from "./components/Pages/MainPage"
 import HistoryPage from "./components/Pages/HistoryPage"
@@ -10,6 +10,14 @@ import RecommendationsPage from "./components/Pages/RecommendationsPage"
 function App() {
     const [page, setPage] = useState("main")
     const [showCamera, setShowCamera] = useState(false)
+
+    const [data, setData] = useState(null)
+    useEffect(() => {
+        fetch("http://localhost:3001/api")
+            .then((response) => response.json())
+            .then((data) => setData(data.message))
+            .catch((error) => console.error("Error:", error))
+    }, [])
 
     return (
         <Layout>
@@ -27,6 +35,7 @@ function App() {
                 {page === "history" && <HistoryPage />}
                 {page === "statistic" && <StatisticPage />}
                 {page === "recommendations" && <RecommendationsPage onBack={() => setPage("main")} />}
+                <p>{!data ? "Loading..." : data}</p>
             </Layout.Content>
         </Layout>
     )
