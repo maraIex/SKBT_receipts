@@ -2,15 +2,14 @@ from datetime import datetime
 from decimal import Decimal
 from fastapi import FastAPI
 from pydantic import BaseModel
-
-app = FastAPI
-
 from sqlalchemy import TIMESTAMP, ForeignKey, String, Boolean, Numeric
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase, Mapped
 from sqlalchemy.testing.schema import mapped_column
 
-engine = create_async_engine('sqlite+aiosqlite///receipts.db')
+app = FastAPI()
+
+engine = create_async_engine('sqlite+aiosqlite:///receipts.db')
 
 new_session = async_sessionmaker(engine, expire_on_commit=False)
 
@@ -78,16 +77,3 @@ async def setup_database():
         await conn.run_sync(Base.metadata.create_all)
     return {"ok": True}
 
-class ReceiptAddSchema(BaseModel):
-    ...
-
-class ReceiptSchema(ReceiptAddSchema):
-    ...
-
-@app.post("/receipts")
-async def add_receipt(data: ReceiptAddSchema):
-    ...
-
-@app.post("/receipts")
-async def get_receipts():
-    ...
