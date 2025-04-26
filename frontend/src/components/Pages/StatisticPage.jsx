@@ -1,14 +1,7 @@
 /** @format */
-import { useState } from "react"
 import { Typography, Divider, Card } from "antd"
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts"
-import { chartData, chartColors } from "../../data"
-
-const categoryData = [
-    { name: "Продукты", cost: 1950 },
-    { name: "Развлечения", cost: 1960 },
-    { name: "Рестораны", cost: 1850 },
-]
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Label } from "recharts"
+import { chartColors, totalCostByCategory, totalСost } from "../../data"
 
 export default function StatisticPage() {
     return (
@@ -21,7 +14,7 @@ export default function StatisticPage() {
                 <ResponsiveContainer>
                     <PieChart>
                         <Pie
-                            data={chartData}
+                            data={totalCostByCategory}
                             cx="50%"
                             cy="50%"
                             innerRadius={80} // Радиус отверстия (для пончика)
@@ -30,24 +23,41 @@ export default function StatisticPage() {
                             paddingAngle={3} // Пространство между сегментами
                             dataKey="value" // Ключ данных для значений
                         >
-                            {chartData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={chartColors[index % chartColors.length]} />
+                            <Label
+                                value={"Всего: " + totalСost}
+                                position="center"
+                                style={{
+                                    fontSize: "18px",
+                                    fontWeight: "bold",
+                                    fill: "#333",
+                                }}
+                            />
+                            {totalCostByCategory.map((item, index) => (
+                                <Cell
+                                    key={`cell-${item.categoryName}`}
+                                    fill={
+                                        chartColors[
+                                            (index + Math.floor(index / chartColors.length)) %
+                                                chartColors.length
+                                        ]
+                                    }
+                                />
                             ))}
                         </Pie>
+
                         <Legend
-                            layout="horizontal" // Горизонтальное или вертикальное расположение
-                            align="center" // Выравнивание (left, center, right)
-                            verticalAlign="bottom" // Вертикальное выравнивание (top, middle, bottom)
-                            iconType="circle" // Тип иконок (circle, rect, cross и т.д.)
+                            layout="horizontal"
+                            align="center"
+                            verticalAlign="bottom"
+                            iconType="circle"
                             wrapperStyle={{
-                                // Стили контейнера
-                                paddingLeft: "20px", // Отступ от графика
+                                paddingLeft: "20px",
                             }}
-                            payload={chartData.map((item, index) => ({
-                                value: `${item.name} ${item.value}%`, // Полный контроль над текстом
-                                type: "circle", // Тип иконки
-                                color: chartColors[index], // Цвет
-                                id: item.name, // Уникальный ключ
+                            payload={totalCostByCategory.map((item, index) => ({
+                                value: `${item.categoryName} (${item.percentageOfTotal}%)`,
+                                type: "circle",
+                                color: chartColors[index % chartColors.length],
+                                id: item.categoryName,
                             }))}
                         />
                     </PieChart>
@@ -56,10 +66,12 @@ export default function StatisticPage() {
             <Divider variant="solid" style={{ borderColor: "#0958d9", fontSize: "20px" }}>
                 Категории
             </Divider>
-            {categoryData.map((category) => (
-                <Card key={category.name} style={{ width: "90vw", margin: "15px auto", fontSize: "25px" }}>
-                    <Typography style={{ fontSize: "21px:" }}>
-                        {category.name} {category.cost}
+            {totalCostByCategory.map((element) => (
+                <Card
+                    key={element.categoryName}
+                    style={{ width: "90vw", margin: "15px auto", fontSize: "25px" }}>
+                    <Typography style={{ fontSize: "19px" }}>
+                        {element.categoryName}: {element.value}
                     </Typography>
                 </Card>
             ))}
