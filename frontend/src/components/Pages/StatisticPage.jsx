@@ -1,8 +1,14 @@
 /** @format */
 import { useState } from "react"
-import { Typography } from "antd"
+import { Typography, Divider, Card } from "antd"
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts"
 import { chartData, chartColors } from "../../data"
+
+const categoryData = [
+    { name: "Продукты", cost: 1950 },
+    { name: "Развлечения", cost: 1960 },
+    { name: "Рестораны", cost: 1850 },
+]
 
 export default function StatisticPage() {
     return (
@@ -47,6 +53,16 @@ export default function StatisticPage() {
                     </PieChart>
                 </ResponsiveContainer>
             </div>
+            <Divider variant="solid" style={{ borderColor: "#0958d9", fontSize: "20px" }}>
+                Категории
+            </Divider>
+            {categoryData.map((category) => (
+                <Card key={category.name} style={{ width: "90vw", margin: "15px auto", fontSize: "25px" }}>
+                    <Typography style={{ fontSize: "21px:" }}>
+                        {category.name} {category.cost}
+                    </Typography>
+                </Card>
+            ))}
         </div>
     )
 }

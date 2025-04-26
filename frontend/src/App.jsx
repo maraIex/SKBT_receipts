@@ -8,9 +8,7 @@ import StatisticPage from "./components/Pages/StatisticPage"
 import RecommendationsPage from "./components/Pages/RecommendationsPage"
 
 function App() {
-    const [page, setPage] = useState("main")
-    
-    
+    const [page, setPage] = useState("statistic")
 
     return (
         <>
