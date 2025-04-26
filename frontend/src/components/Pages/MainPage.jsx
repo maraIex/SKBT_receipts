@@ -31,15 +31,17 @@ const footerStyle = {
     backgroundColor: "#4096ff",
 }
 
-export default function MainPage({ onNavigate }) { // Принимаем пропс onNavigate
+export default function MainPage({ onNavigate, showCamera, setShowCamera }) {
     return (
-        <Layout.Content style={contentStyle}>
+        <div style={contentStyle}>
             <Body 
                 totalSpending={totalSpending}
                 topCategories={topCategories}
                 onShowHistory={() => onNavigate("history")}
                 onShowStatistics={() => onNavigate("statistic")}
+                showCamera={showCamera}
+                setShowCamera={setShowCamera}
             />
-        </Layout.Content>
+        </div>
     )
 }
