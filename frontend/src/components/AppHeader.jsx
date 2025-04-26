@@ -12,6 +12,10 @@ export default function AppHeader({ onPageChange, setShowCamera }) {
         setDrawer(false);
     }
 
+    const handleLogoClick = () => {
+        onPageChange("main");
+    };
+
     return (
         <Layout.Header
             style={{
@@ -31,16 +35,18 @@ export default function AppHeader({ onPageChange, setShowCamera }) {
                 style={{
                     display: "block",
                     alignSelf: "center",
+                    cursor: "pointer", // Добавляем указатель при наведении
                 }}
                 preview={false}
                 width={120}
                 height={32}
                 alt="Логотип"
+                onClick={handleLogoClick} // Добавляем обработчик клика
             />
 
             <div>
                 <Button 
-                    type="text"  // Убираем тип 'primary' чтобы не было синего фона
+                    type="text"
                     onClick={() => setDrawer(true)}
                     style={{
                         width: 40,
@@ -49,14 +55,14 @@ export default function AppHeader({ onPageChange, setShowCamera }) {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        border: "none",  // Убираем границу
-                        boxShadow: "none",  // Убираем тень
+                        border: "none",
+                        boxShadow: "none",
                     }}
                 >
                     <MenuOutlined 
                         style={{ 
-                            fontSize: 24,  // Увеличиваем размер иконки
-                            color: "#666",  // Серый цвет иконки
+                            fontSize: 24,
+                            color: "#666",
                         }} 
                     />
                 </Button>
