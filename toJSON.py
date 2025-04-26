@@ -4,17 +4,17 @@ import json
 import changeWords
 
 text = """
-"KrlCUUBЫИ ЧЕК ПIРИХUI ПРодажа   Il29526 Емвна Цн1 IL280 1 ,00U x 40,00 =40,00 Хлеб 2.0UU х 2,0М =4 ,0И КомПот Mз ЕУХОФРЧК ТОB 1,00M x 20,00 =20,00 КРасное кfaP; 1,000 х 50.00 =50,00 КонТейнет 2QOMл . ПРЯНЕУГ КРЫШК ой 1 (U0 х 6.00 6 ,00 НДС 20% 21 .00 итог =12ш wu Счмма ндС 20* i1.00 Сзнма БЕЗ НдС =114 00 БЕ ~нЯЛИЧНЫми =1zu . gw 1il; 1 +iibiiui: FU('ilart [Ltillk  Llжe | HUё ui Pa juija i ЁflblIUL  ЧlцiРНИР {Ы Ш&Г 0 Ulx i ijijaiilii| ;Ёuia | UВCKИЙ {Uf `titaPE {НЕНПЫЙ 4₽хМ'Еf КИЙ чi {HLEPEMTET iitit:tIи ГаГаРиt .f: 4iйU34,1   . Ё;/  1 | 1l, 'Jfl  ПtпlитекпнчеЕ:Ках; Ц. 77 Kaf [M; Гн:aPeпа Юнlя {Ii:1 1& Ка [ Ч Ii ' }и] : ('1(INая 25 CHU: IC:II ii  ё _ 1  kt : (J(J(J : l;Zli3-itJujl7'70 Iiffin 12i3 JIt tkl: +0U3UY106b62954  14357 ЁаЙ| 'tli' WWlil. Ild ]Ug oU.ru 15348 {6925 7ЗЖ6Ч U5U1 ]93957 Mlll:   6+5+064 IiJU 25.U9.25 13:41\n{НЛНЙН-KHCCn 3U]Np хоРошЕт < щН Я 
+КАССОВЫЙ ЧЕК |\nПРИХОД\nПродажа 1.29526 ©\nци. 29526 Смена (280\n1.0)\nХлеб, 00 х 4И.00 =40 .00\nы 2.000 х2 24\nКомпот из сухофруктов, 90.00\n1,000 x 20,00 22\nKPacHoe море 90 220.00\n| 1.000 х 50.00 250,00\nparent 200A. ПРЯМОУГ.С КРЫШК\n1.000 х 6.00 =6.00\n: HAC 20x =1.00\n/ WTO =120.0u\n| Cuma HAC 20x =1.00\n° Съмма БЕЗ НАС 2114.00\nDE SHAMIM 2128.3\nНоРРоНЬНОе POC Hart Theil: важетное |\nОБРа Збательное УЧРЕxДЕНИЕ ВЫСШЕГО 6\n` озозания Саратовский гГосчмарственный\nтехнический чниверситет инени Гагарииа\n| WAL\n© 91605460 Copa ruts, Si TOMA KOA He\nКассир Гнусарева Юия\n— Несто восче ние Столовая 25\n| си: оси\n| HBR MS Ви ВЕ 0003925690017\n‚ смена 126 WEEKES P0030 7400b62904\n| Hi 14357 Caw PIC: wu. NATGE. SOU. PU\nре: 154005925 ИК 7380440801193957\nГ 25.04,25 13:01 ИНН; 6459064119\n} Get\n‚ ри,\nWE\n| Е\n4. д a\nнь И\nmeee\nwalt. О\nayeKACCA ABOLOP\naHiIAMH-KACCN\n~OPOUE Tt о дыя*\nАР УМ
 """
 
 prompt = f"""
-Проанализируй текст чека и верни данные в формате JSON. Структура:
+Проанализируй текст чека, и верни данные в формате JSON. Структура:
 {{
   "store": "название магазина",
   "date": "дата в формате YYYY-MM-DD",
   "time": "время в формате HH:MM",
   "items": [
-    {{"name": "название товара", "price": цена}},
+    {{"name": "название товара", "price": цена, "quantity": количество}},
     ...
   ],
   "total": общая_сумма
@@ -22,15 +22,17 @@ prompt = f"""
 
 Текст чека:
 {text}
+Магазин существует в реальности, надо подобрать название ближайшее к нему. Количество умноженное на
+цену и суммированное по всем продуктам должно быть равно итоговой сумме. Все названия реальные, подбирай те, которые подходят.
 """
 
 url = "https://openrouter.ai/api/v1/chat/completions"
-api_key = "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"
+api_key = "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"
 
 headers = {
     "Authorization": f"Bearer {api_key}",
     "HTTP-Referer": "https://github.com/maraIex/SKBT_receipts",
-    "X-Title": "My AI Project",
+    "X-Title": "AI Project",
     "Content-Type": "application/json"
 }
 

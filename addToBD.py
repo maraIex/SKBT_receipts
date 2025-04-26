@@ -1,6 +1,7 @@
 from datetime import datetime
 from decimal import Decimal
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 app = FastAPI
 
@@ -75,3 +76,18 @@ async def setup_database():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
+    return {"ok": True}
+
+class ReceiptAddSchema(BaseModel):
+    ...
+
+class ReceiptSchema(ReceiptAddSchema):
+    ...
+
+@app.post("/receipts")
+async def add_receipt(data: ReceiptAddSchema):
+    ...
+
+@app.post("/receipts")
+async def get_receipts():
+    ...
