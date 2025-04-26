@@ -2,7 +2,7 @@
 import { Card, Row, Col, Statistic, List, Button } from "antd"
 import { PieChartOutlined, ShoppingCartOutlined, ScanOutlined, HistoryOutlined } from "@ant-design/icons"
 import { useState } from "react"
-import { History } from "../History"
+import HistoryPage from "./Pages/HistoryPage"
 import { colors } from "../colors"
 
 const mockReceipts = [
@@ -117,7 +117,7 @@ export const Body = ({ totalSpending, topCategories }) => {
                 </>
             ) : (
                 // Экран истории
-                <History
+                <HistoryPage
                     receipts={mockReceipts}
                     onBack={() => setShowHistory(false)}
                     onShowStats={handleShowStats}
