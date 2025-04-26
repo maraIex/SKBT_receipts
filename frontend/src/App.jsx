@@ -1,6 +1,6 @@
 /** @format */
 import { Layout, Card, Row, Col, Button, Statistic, List } from "antd"
-
+import { Body } from "./Body";
 const { Header, Content, Footer } = Layout;
     
 const headerStyle = {
@@ -25,80 +25,25 @@ const footerStyle = {
 }
 
 function App() {
-
     const totalSpending = 12500; // Общие траты за месяц
     const topCategories = [
-    { name: "Продукты", amount: 6500 },
-    { name: "Кафе", amount: 3200 },
-    { name: "Транспорт", amount: 2800 },
+      { name: "Продукты", amount: 6500 },
+      { name: "Кафе", amount: 3200 },
+      { name: "Транспорт", amount: 2800 },
     ];
-
+  
     return (
-        <>
-            <Layout>
-                <Layout.Header style={headerStyle}><h1>Анализ чеков</h1></Layout.Header>
-                <Layout.Content style={contentStyle}>
-                    <Row gutter={[16, 16]} style={{ marginBottom: '20px' }}>
-                        <Col span={24}>
-                            <Card title="Общая статистика">
-                                <Row gutter={16}>
-                                    <Col span={12}>
-                                        <Statistic
-                                        title="Траты за месяц"
-                                        value={totalSpending}
-                                        prefix="₽"
-                                        />
-                                    </Col>
-                                    <Col span={12}>
-                                        <Statistic
-                                        title="Популярные категории"
-                                        value={topCategories.length}
-                                        prefix={<PieChartOutlined />}
-                                    />
-                                </Col>
-                                </Row>
-                            </Card>
-                        </Col>
-                    </Row>
-
-                    {/* Топ-3 категории */}
-                    <Row gutter={[16, 16]} style={{ marginBottom: '20px' }}>
-                        <Col span={24}>
-                            <Card title="Топ-3 категории">
-                                <List
-                                dataSource={topCategories}
-                                renderItem={(item) => (
-                                <List.Item>
-                                    <List.Item.Meta
-                                    avatar={<ShoppingCartOutlined />}
-                                    title={item.name}
-                                    description={`${item.amount} ₽`}
-                                    />
-                                </List.Item>
-                                )}
-                                />
-                            </Card>
-                        </Col>
-                    </Row>
-
-                    {/* Кнопка сканера */}
-                    <Row>
-                        <Col span={24} style={{ textAlign: 'center' }}>
-                            <Button 
-                            type="primary" 
-                            size="large" 
-                            icon={<ScanOutlined />}
-                            onClick={() => console.log('Переход на сканер')}
-                            >
-                            Сканировать чек
-                            </Button>
-                        </Col>
-                    </Row>
-                </Layout.Content>
-                <Layout.Footer style={footerStyle}>Receipt Analyzer ©2025</Layout.Footer>
-            </Layout>
-        </>
-    )
-}
+      <Layout>
+        <Header style={headerStyle}><h1>Анализ чеков</h1></Header>
+        <Content style={contentStyle}>
+          <Body
+            totalSpending={totalSpending} 
+            topCategories={topCategories} 
+          />
+        </Content>
+        <Footer style={footerStyle}>Receipt Analyzer ©2025</Footer>
+      </Layout>
+    );
+  }
 
 export default App
