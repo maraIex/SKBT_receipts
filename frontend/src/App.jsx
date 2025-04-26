@@ -1,4 +1,12 @@
 /** @format */
+    //return (
+    //    <Content style={contentStyle}>
+    //      <Body
+    //        totalSpending={totalSpending} 
+    //        topCategories={topCategories} 
+    //      />
+    //    </Content>
+    //);
 import { Layout } from "antd"
 import { useState } from "react"
 import AppHeader from "./components/AppHeader"
@@ -9,6 +17,13 @@ import RecommendationsPage from "./components/Pages/RecommendationsPage"
 
 function App() {
     const [page, setPage] = useState("statistic")
+    
+    const totalSpending = 12500; // Общие траты за месяц
+    const topCategories = [
+      { name: "Продукты", amount: 6500 },
+      { name: "Кафе", amount: 3200 },
+      { name: "Транспорт", amount: 2800 },
+    ];
 
     return (
         <>
