@@ -1,12 +1,4 @@
 /** @format */
-    //return (
-    //    <Content style={contentStyle}>
-    //      <Body
-    //        totalSpending={totalSpending} 
-    //        topCategories={topCategories} 
-    //      />
-    //    </Content>
-    //);
 import { Layout } from "antd"
 import { useState } from "react"
 import AppHeader from "./components/AppHeader"
@@ -16,14 +8,9 @@ import StatisticPage from "./components/Pages/StatisticPage"
 import RecommendationsPage from "./components/Pages/RecommendationsPage"
 
 function App() {
-    const [page, setPage] = useState("statistic")
+    const [page, setPage] = useState("main")
     
-    const totalSpending = 12500; // Общие траты за месяц
-    const topCategories = [
-      { name: "Продукты", amount: 6500 },
-      { name: "Кафе", amount: 3200 },
-      { name: "Транспорт", amount: 2800 },
-    ];
+    
 
     return (
         <>
@@ -32,7 +19,7 @@ function App() {
 
                 <Layout.Content
                     style={{
-                        padding: 24,
+                        padding: 0,
                         minHeight: 380,
                         background: "#fff",
                     }}>

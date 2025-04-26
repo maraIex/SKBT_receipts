@@ -7,7 +7,9 @@ import { chartData, chartColors } from "../../data"
 export default function StatisticPage() {
     return (
         <div>
-            <Typography.Title level={2}>Статистика по покупкам</Typography.Title>
+            <Typography.Title style={{ margin: "24px" }} level={2}>
+                Статистика по покупкам
+            </Typography.Title>
 
             <div style={{ width: "100%", height: "300px", pointerEvents: "none" }}>
                 <ResponsiveContainer>
@@ -37,10 +39,10 @@ export default function StatisticPage() {
                             }}
                             payload={chartData.map((item, index) => ({
                                 value: `${item.name} ${item.value}%`, // Полный контроль над текстом
-                                type: 'circle',                       // Тип иконки
-                                color: chartColors[index],                 // Цвет
-                                id: item.name                         // Уникальный ключ
-                              }))}
+                                type: "circle", // Тип иконки
+                                color: chartColors[index], // Цвет
+                                id: item.name, // Уникальный ключ
+                            }))}
                         />
                     </PieChart>
                 </ResponsiveContainer>
