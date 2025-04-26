@@ -1,10 +1,7 @@
 import json
 import re
-from datetime import datetime
 from sentence_transformers import SentenceTransformer
 import numpy as np
-import os
-import sys
 
 # Инициализация модели
 model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')  # Более мощная модель
