@@ -1,15 +1,15 @@
 /** @format */
-import { useState } from "react"
-import { Layout, Button, Drawer, Image } from "antd"
-import { HomeOutlined, ScanOutlined, HistoryOutlined, PieChartOutlined } from "@ant-design/icons"
-import logo from "/logo-name.svg"
+import { useState } from "react";
+import { Layout, Button, Drawer, Image } from "antd";
+import { HomeOutlined, ScanOutlined, HistoryOutlined, PieChartOutlined, MenuOutlined } from "@ant-design/icons";
+import logo from "../icons/sovkombank_logo.svg";
 
-export default function AppHeader({ onPageChange, setShowCamera   }) {
-    const [drawer, setDrawer] = useState(false)
+export default function AppHeader({ onPageChange, setShowCamera }) {
+    const [drawer, setDrawer] = useState(false);
 
     function menuClick(type) {
-        onPageChange(type)
-        setDrawer(false)
+        onPageChange(type);
+        setDrawer(false);
     }
 
     return (
@@ -39,8 +39,26 @@ export default function AppHeader({ onPageChange, setShowCamera   }) {
             />
 
             <div>
-                <Button type="primary" onClick={() => setDrawer(true)}>
-                    Меню
+                <Button 
+                    type="text"  // Убираем тип 'primary' чтобы не было синего фона
+                    onClick={() => setDrawer(true)}
+                    style={{
+                        width: 40,
+                        height: 40,
+                        padding: 0,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        border: "none",  // Убираем границу
+                        boxShadow: "none",  // Убираем тень
+                    }}
+                >
+                    <MenuOutlined 
+                        style={{ 
+                            fontSize: 24,  // Увеличиваем размер иконки
+                            color: "#666",  // Серый цвет иконки
+                        }} 
+                    />
                 </Button>
             </div>
 
