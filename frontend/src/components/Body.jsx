@@ -1,19 +1,32 @@
-    /** @format */
-    import { Card, Row, Col, Statistic, List, Button } from "antd"
-    import { PieChartOutlined, ShoppingCartOutlined, ScanOutlined, HistoryOutlined } from "@ant-design/icons"
-    import { useState } from "react"
-    import HistoryPage from "./Pages/HistoryPage"
-    import { colors } from "../colors"
+/** @format */
+import { Card, Row, Col, Statistic, List, Button } from "antd"
+import { PieChartOutlined, ShoppingCartOutlined, ScanOutlined, HistoryOutlined } from "@ant-design/icons"
+import { useState, useRef } from "react"
+import HistoryPage from "./Pages/HistoryPage"
+import { colors } from "../colors"
+import Webcam from "react-webcam"
 
-    import { mockReceipts } from '../receipts';
+import { mockReceipts } from '../receipts';
 
-    export const Body = ({ 
-        totalSpending, 
-        topCategories,
-        onShowHistory,       // Колбэк для перехода на историю
-        onShowStatistics     // Колбэк для перехода на статистику
-    }) => {
-        const scannedReceiptsCount = mockReceipts.length;
+
+export const Body = ({ totalSpending,
+                    topCategories,
+                    onShowHistory,       // Колбэк для перехода на историю
+                    onShowStatistics     // Колбэк для перехода на статистику
+                }) => {
+    const [showHistory, setShowHistory] = useState(false)
+    const [showStatistics, setShowStatistics] = useState(false)
+    const [showCamera, setShowCamera] = useState(false)
+    const webcamRef = useRef(null)
+
+    const capturePhoto = () => {
+        if (webcamRef.current) {
+            const photo = webcamRef.current.getScreenshot()
+            console.log(photo) // base64-строка
+            setShowCamera(false) // Закрываем камеру после съёмки
+        }
+    }
+
 
         return (
             <>
@@ -46,49 +59,78 @@
                     </Col>
                 </Row>
 
-                <Row gutter={[16, 16]} style={{ marginBottom: '20px' }}>
-                    <Col span={24}>
-                        <Card title="Топ-3 категории">
-                            <List
-                                dataSource={topCategories}
-                                renderItem={(item) => (
-                                    <List.Item>
-                                        <List.Item.Meta
-                                            avatar={<ShoppingCartOutlined />}
-                                            title={item.name}
-                                            description={`${item.amount} ₽`}
-                                        />
-                                    </List.Item>
-                                )}
-                            />
-                        </Card>
-                    </Col>
-                </Row>
+                    <Row gutter={[16, 16]} style={{ marginBottom: "20px" }}>
+                        <Col span={24}>
+                            <Card title="Топ-3 категории">
+                                <List
+                                    dataSource={topCategories}
+                                    renderItem={(item) => (
+                                        <List.Item>
+                                            <List.Item.Meta
+                                                avatar={<ShoppingCartOutlined />}
+                                                title={item.name}
+                                                description={`${item.amount} ₽`}
+                                            />
+                                        </List.Item>
+                                    )}
+                                />
+                            </Card>
+                        </Col>
+                    </Row>
 
-                <Row gutter={[16, 16]}>
-                    <Col span={12} style={{ textAlign: 'center' }}>
-                        <Button 
-                            type="primary" 
-                            size="large" 
-                            icon={<ScanOutlined />}
-                            onClick={() => console.log('Сканирование чека')}
-                            block
-                        >
-                            Сканировать чек
+                    <Row gutter={[16, 16]}>
+                        <Col span={12} style={{ textAlign: "center" }}>
+                            <Button
+                                type="primary"
+                                size="large"
+                                icon={<ScanOutlined />}
+                                onClick={() => setShowCamera(true)}
+                                block>
+                                Сканировать чек
+                            </Button>
+                        </Col>
+                        <Col span={12} style={{ textAlign: "center" }}>
+                            <Button
+                                type="default"
+                                size="large"
+                                icon={<HistoryOutlined />}
+                                onClick={() => setShowHistory(true)}
+                                block>
+                                История
+                            </Button>
+                        </Col>
+                    </Row>
+                </>
+            )  (
+            )}
+            {showCamera && (
+                <div
+                    style={{
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: "rgba(0,0,0,0.9)",
+                        zIndex: 1000,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}>
+                    <Webcam
+                        ref={webcamRef}
+                        audio={false}
+                        screenshotFormat="image/jpeg"
+                        style={{ maxWidth: "100%" }}
+                    />
+                    <div style={{ marginTop: 20 }}>
+                        <Button onClick={capturePhoto} type="primary">
+                            Сделать фото
                         </Button>
-                    </Col>
-                    <Col span={12} style={{ textAlign: 'center' }}>
-                        <Button 
-                            type="default" 
-                            size="large" 
-                            icon={<HistoryOutlined />}
-                            onClick={onShowHistory}
-                            block
-                        >
-                            История
+                        <Button onClick={() => setShowCamera(false)} style={{ marginLeft: 10 }}>
+                            Отмена
                         </Button>
-                    </Col>
-                </Row>
-            </>
-        );
-    };
+                    </div>
+                </div>
+            )}

@@ -10,9 +10,7 @@ import RecommendationsPage from "./components/Pages/RecommendationsPage"
 import { mockReceipts } from './receipts';
 
 function App() {
-    const [page, setPage] = useState("main")
-    
-    
+    const [page, setPage] = useState("statistic")
 
     return (
         <>
