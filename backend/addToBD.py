@@ -25,7 +25,7 @@ class ShopModel(Base):
     shop_id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     is_partner: Mapped[bool] = mapped_column(Boolean, default=False)
-    category: Mapped[str] = mapped_column(String(100), nullable=True)
+    category_id: Mapped[str] = mapped_column(ForeignKey("Categories.category_id"))
 
 class CategoryModel(Base):
     __tablename__ = "Categories"
