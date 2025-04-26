@@ -39,7 +39,7 @@ export default function HistoryPage({ receipts, onBack, onShowStats }) {
         <div style={{ padding: "0 16px" }}>
             <Row style={{ marginBottom: "16px" }}>
                 <Col span={24}>
-                    <Button type="text" icon={<HistoryOutlined />} onClick={onBack}>
+                    <Button type="text" icon={<HistoryOutlined />} onClick={onBack} style={{ background: colors.white }}>
                         Назад к статистике
                     </Button>
                 </Col>
