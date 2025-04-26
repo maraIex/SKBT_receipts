@@ -1,7 +1,7 @@
 /** @format */
 import { Layout, Card, Row, Col, Button, Statistic, List } from "antd"
 import { Body } from "./Body";
-import { colors } from '../theme/colors';
+import { colors } from './colors';
 const { Header, Content, Footer } = Layout;
     
 const headerStyle = {

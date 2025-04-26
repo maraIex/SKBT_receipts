@@ -6,7 +6,7 @@ import {
   PieChartOutlined,
   HistoryOutlined 
 } from "@ant-design/icons";
-import { colors } from '../theme/colors';
+import { colors } from './colors';
 
 const PARTNER_STORES = ["Пятёрочка", "Магнит", "Лента", "Перекрёсток"];
 

@@ -3,7 +3,7 @@ import { Card, Row, Col, Statistic, List, Button } from "antd";
 import { PieChartOutlined, ShoppingCartOutlined, ScanOutlined, HistoryOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { History } from "./History";
-import { colors } from '../theme/colors';
+import { colors } from './colors';
 
 const mockReceipts = [
   {
