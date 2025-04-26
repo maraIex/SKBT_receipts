@@ -1,34 +1,33 @@
 /** @format */
 import { Layout } from "antd"
-
-const headerStyle = {
-    textAlign: "center",
-    color: "#fff",
-    height: 60,
-    paddingInline: 48,
-    lineHeight: "64px",
-    backgroundColor: "#4096ff",
-}
-const contentStyle = {
-    textAlign: "center",
-    minHeight: "calc(100vh - 120px)",
-    color: "#fff",
-    backgroundColor: "#0958d9",
-}
-const footerStyle = {
-    height: 60,
-    textAlign: "center",
-    color: "#fff",
-    backgroundColor: "#4096ff",
-}
+import { useState } from "react"
+import AppHeader from "./components/AppHeader"
+import MainPage from "./components/Pages/MainPage"
+import HistoryPage from "./components/Pages/HistoryPage"
+import StatisticPage from "./components/Pages/StatisticPage"
+import RecommendationsPage from "./components/Pages/RecommendationsPage"
 
 function App() {
+    const [page, setPage] = useState("statistic")
+
     return (
         <>
             <Layout>
-                <Layout.Header style={headerStyle}>Header</Layout.Header>
-                <Layout.Content style={contentStyle}>Content</Layout.Content>
-                <Layout.Footer style={footerStyle}>Footer</Layout.Footer>
+                <AppHeader currentPage={page} onPageChange={setPage} />
+
+                <Layout.Content
+                    style={{
+                        padding: 0,
+                        minHeight: 380,
+                        background: "#fff",
+                    }}>
+                    {page === "main" && <MainPage />}
+                    {page === "history" && <HistoryPage />}
+                    {page === "statistic" && <StatisticPage />}
+                    {page === "recommendations" && <RecommendationsPage />}
+                </Layout.Content>
+
+                <Layout.Footer style={{ textAlign: "center" }}>Created by command Dark Mode</Layout.Footer>
             </Layout>
         </>
     )
