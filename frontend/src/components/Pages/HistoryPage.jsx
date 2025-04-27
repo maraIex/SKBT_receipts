@@ -8,6 +8,12 @@ import { useState } from "react"
 export default function HistoryPage() {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [selectedReceipt, setSelectedReceipt] = useState(null)
+
+    // Функция для проверки партнерства
+    const isPartnerStore = (storeName) => {
+        return PARTNER_STORES.some((store) => store.name === storeName)
+    }
+
     const cardStyles = {
         partner: {
             borderLeft: `4px solid ${colors.muted_green}`,
@@ -48,7 +54,7 @@ export default function HistoryPage() {
                                 <div style={cardStyles.titleContainer}>
                                     <div style={cardStyles.leftTitle}>
                                         <span>Чек №{receipt.id}</span>
-                                        {PARTNER_STORES.includes(receipt.store) && (
+                                        {isPartnerStore(receipt.store) && (
                                             <Tag color="success" style={{ margin: 0 }}>
                                                 Партнёр
                                             </Tag>
@@ -59,9 +65,7 @@ export default function HistoryPage() {
                             }
                             style={{
                                 width: "100%",
-                                ...(PARTNER_STORES.includes(receipt.store)
-                                    ? cardStyles.partner
-                                    : cardStyles.regular),
+                                ...(isPartnerStore(receipt.store) ? cardStyles.partner : cardStyles.regular),
                             }}
                             styles={{ body: cardStyles.cardBody }}
                             size="small">
@@ -82,7 +86,7 @@ export default function HistoryPage() {
                                 icon={<PieChartOutlined />}
                                 onClick={() => {
                                     setIsModalOpen(true)
-                                    setSelectedReceipt(receipt) // Исправлено: было setSelectedReceipt
+                                    setSelectedReceipt(receipt)
                                 }}
                                 style={{
                                     padding: "0",
@@ -96,13 +100,12 @@ export default function HistoryPage() {
                 )}
             />
 
-            {/* Модальное окно вынесено за пределы List */}
             <Modal
                 closeIcon={false}
                 title={
                     <span style={{ fontSize: "24px", display: "flex", alignItems: "center" }}>
                         Чек №{selectedReceipt?.id || ""}
-                        {PARTNER_STORES.includes(selectedReceipt?.store) && (
+                        {selectedReceipt && isPartnerStore(selectedReceipt.store) && (
                             <Tag
                                 color="success"
                                 style={{
