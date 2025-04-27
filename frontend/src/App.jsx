@@ -11,13 +11,13 @@ function App() {
     const [page, setPage] = useState("main")
     const [showCamera, setShowCamera] = useState(false)
 
-    const [data, setData] = useState(null)
-    useEffect(() => {
-        fetch("http://localhost:3001/api")
-            .then((response) => response.json())
-            .then((data) => setData(data.message))
-            .catch((error) => console.error("Error:", error))
-    }, [])
+    // const [data, setData] = useState(null)
+    // useEffect(() => {
+    //     fetch("http://localhost:3001/api")
+    //         .then((response) => response.json())
+    //         .then((data) => setData(data.message))
+    //         .catch((error) => console.error("Error:", error))
+    // }, [])
 
     return (
         <Layout>
@@ -35,7 +35,7 @@ function App() {
                 {page === "history" && <HistoryPage />}
                 {page === "statistic" && <StatisticPage />}
                 {page === "recommendations" && <RecommendationsPage onBack={() => setPage("main")} />}
-                <p>{!data ? "Loading..." : data}</p>
+                {/* <p>{!data ? "Loading..." : data}</p> */}
             </Layout.Content>
         </Layout>
     )
