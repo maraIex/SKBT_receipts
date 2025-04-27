@@ -1,11 +1,9 @@
 import requests
 import json
+import receiptParser
+import getNumOfRec
 
-import changeWords
-
-text = """
-КАССОВЫЙ ЧЕК |\nПРИХОД\nПродажа 1.29526 ©\nци. 29526 Смена (280\n1.0)\nХлеб, 00 х 4И.00 =40 .00\nы 2.000 х2 24\nКомпот из сухофруктов, 90.00\n1,000 x 20,00 22\nKPacHoe море 90 220.00\n| 1.000 х 50.00 250,00\nparent 200A. ПРЯМОУГ.С КРЫШК\n1.000 х 6.00 =6.00\n: HAC 20x =1.00\n/ WTO =120.0u\n| Cuma HAC 20x =1.00\n° Съмма БЕЗ НАС 2114.00\nDE SHAMIM 2128.3\nНоРРоНЬНОе POC Hart Theil: важетное |\nОБРа Збательное УЧРЕxДЕНИЕ ВЫСШЕГО 6\n` озозания Саратовский гГосчмарственный\nтехнический чниверситет инени Гагарииа\n| WAL\n© 91605460 Copa ruts, Si TOMA KOA He\nКассир Гнусарева Юия\n— Несто восче ние Столовая 25\n| си: оси\n| HBR MS Ви ВЕ 0003925690017\n‚ смена 126 WEEKES P0030 7400b62904\n| Hi 14357 Caw PIC: wu. NATGE. SOU. PU\nре: 154005925 ИК 7380440801193957\nГ 25.04,25 13:01 ИНН; 6459064119\n} Get\n‚ ри,\nWE\n| Е\n4. д a\nнь И\nmeee\nwalt. О\nayeKACCA ABOLOP\naHiIAMH-KACCN\n~OPOUE Tt о дыя*\nАР УМ
-"""
+text = receiptParser.process_receipt("/ путь до изображения/")
 
 prompt = f"""
 Проанализируй текст чека, и верни данные в формате JSON. Структура:
@@ -62,7 +60,9 @@ try:
     # Можно сохранить в файл
     with open('receipt.json', 'w', encoding='utf-8') as f:
         json.dump(receipt_data, f, indent=2, ensure_ascii=False)
-    print("\nДанные сохранены в receipt.json")
+
+    getNumOfRec.process_receipt("receipt.json", "out_receipt.json")
+
 except json.JSONDecodeError:
     print("Ошибка: Не удалось распарсить JSON из ответа AI")
     print("Ответ AI:", ai_content)

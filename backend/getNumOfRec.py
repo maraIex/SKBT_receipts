@@ -69,10 +69,3 @@ def process_receipt(input_path, output_path):
         print(f"Файл успешно сохранен: {output_path}")
     except Exception as e:
         print(f"Ошибка сохранения: {str(e)}")
-
-
-if __name__ == "__main__":
-    input_file = "receipt_data.json"
-    output_dir = "receipt_changed.json"
-
-    process_receipt(input_file, output_dir)
