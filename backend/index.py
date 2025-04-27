@@ -6,14 +6,14 @@ app = FastAPI()
 # Настройки CORS (должны совпадать с вашим фронтендом)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://192.168.0.101:5173"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 @app.post("/upload-photo/")
-async def upload_photo(image: UploadFile = File(...)):
+async def upload_photo(image: UploadFile = File(..., max_size=20_000_000)):
     try:
         # Сохраняем файл
         contents = await image.read()

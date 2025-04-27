@@ -41,7 +41,7 @@ def main():
     run_detached_command([sys.executable, 'main.py'], cwd=backend_path)
 
     # Запуск npm start
-    run_detached_command(['uvicorn', 'index:app', '--reload'], cwd=base_dir, shell=True)
+    run_detached_command(['uvicorn', 'index:app','--host', '0.0.0.0', '--port', '8000'], cwd=backend_path, shell=True)
 
     # Запуск фронтенда
     frontend_path = os.path.join(base_dir, 'frontend')

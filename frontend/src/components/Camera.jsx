@@ -1,57 +1,63 @@
-import Webcam from "react-webcam";
-import { useRef, useState } from "react";
-import { Button, message } from "antd";
+/** @format */
+
+import Webcam from "react-webcam"
+import { useRef, useState } from "react"
+import { Button, message } from "antd"
 
 export default function Camera({ setShowCamera }) {
-    const webcamRef = useRef(null);
-    const [loading, setLoading] = useState(false);
+    const webcamRef = useRef(null)
+    const [loading, setLoading] = useState(false)
 
     const capturePhoto = async () => {
         if (webcamRef.current) {
             try {
-                setLoading(true);
-                const photo = webcamRef.current.getScreenshot();
-                
-                // Только отправка на сервер
-                await sendPhotoToServer(photo);
-                
-                message.success("Фото успешно отправлено!");
+                setLoading(true)
+                const photo = webcamRef.current.getScreenshot()
+
+                console.log("Base64 data:", photo.substring(0, 50) + "...") // Логируем начало строки
+
+                await sendPhotoToServer(photo)
+                message.success("Фото успешно отправлено!")
             } catch (error) {
-                console.error("Ошибка:", error);
-                message.error("Ошибка при отправке фото");
+                console.error("Полная ошибка:", {
+                    message: error.message,
+                    stack: error.stack,
+                    name: error.name,
+                })
+                message.error(`Ошибка: ${error.message}`)
             } finally {
-                setLoading(false);
-                setShowCamera(false);
+                setLoading(false)
+                setShowCamera(false)
             }
         }
-    };
+    }
 
     const sendPhotoToServer = async (base64Data) => {
         try {
             // Конвертация в Blob
-            const blob = await fetch(base64Data).then(res => res.blob());
-            
+            const blob = await fetch(base64Data).then((res) => res.blob())
+
             // Формирование FormData
-            const formData = new FormData();
-            const filename = `photo-${Date.now()}.jpg`;
-            formData.append("image", blob, filename);
+            const formData = new FormData()
+            const filename = `photo-${Date.now()}.jpg`
+            formData.append("image", blob, filename)
 
             // Отправка на сервер
-            const response = await fetch('http://localhost:8000/upload-photo/', {
-                method: 'POST',
-                body: formData
-            });
+            const response = await fetch("http://localhost:8000/upload-photo/", {
+                method: "POST",
+                body: formData,
+            })
 
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.detail || 'Ошибка сервера');
+                const errorData = await response.json()
+                throw new Error(errorData.detail || "Ошибка сервера")
             }
 
-            return await response.json();
+            return await response.json()
         } catch (error) {
-            throw new Error(`Ошибка отправки: ${error.message}`);
+            throw new Error(`Ошибка отправки: ${error.message}`)
         }
-    };
+    }
 
     return (
         <div
@@ -67,48 +73,43 @@ export default function Camera({ setShowCamera }) {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-            }}
-        >
+            }}>
             <Webcam
                 ref={webcamRef}
                 audio={false}
                 screenshotFormat="image/jpeg"
-                style={{ 
+                style={{
                     width: "100%",
                     maxWidth: "100%",
                     height: "auto",
                     maxHeight: "90vh",
-                    objectFit: "cover" 
+                    objectFit: "cover",
                 }}
                 videoConstraints={{
-                    facingMode: "environment"
+                    facingMode: "environment",
                 }}
             />
-            
-            <div style={{ 
-                position: "absolute",
-                bottom: "5%",
-                display: "flex",
-                gap: "20px"
-            }}>
-                <Button 
-                    onClick={capturePhoto} 
+
+            <div
+                style={{
+                    position: "absolute",
+                    bottom: "5%",
+                    display: "flex",
+                    gap: "20px",
+                }}>
+                <Button
+                    onClick={capturePhoto}
                     type="primary"
                     loading={loading}
                     disabled={loading}
-                    size="large"
-                >
+                    size="large">
                     {loading ? "Отправка..." : "Сделать фото"}
                 </Button>
-                
-                <Button 
-                    onClick={() => setShowCamera(false)} 
-                    size="large"
-                    disabled={loading}
-                >
+
+                <Button onClick={() => setShowCamera(false)} size="large" disabled={loading}>
                     Отмена
                 </Button>
             </div>
         </div>
-    );
+    )
 }

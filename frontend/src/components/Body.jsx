@@ -2,7 +2,7 @@
 import { Card, Row, Col, Statistic, List, Button } from "antd"
 import { ShoppingCartOutlined, ScanOutlined, HistoryOutlined } from "@ant-design/icons"
 import Camera from "./Camera"
-import { topThreeCategories, totalСost, receipts } from "../data"
+import { topThreeCategories, totalCost, receipts } from "../data"
 
 export const Body = ({ onShowHistory, onShowStatistics, showCamera, setShowCamera }) => {
     //const [showCamera, setShowCamera] = useState(false);
@@ -23,7 +23,7 @@ export const Body = ({ onShowHistory, onShowStatistics, showCamera, setShowCamer
                             <Col span={12}>
                                 <Statistic
                                     title="Траты за месяц"
-                                    value={totalСost}
+                                    value={totalCost}
                                     precision={0}
                                     suffix="₽"
                                 />

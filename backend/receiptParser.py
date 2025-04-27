@@ -182,6 +182,7 @@ def process_receipt(image_path, ocr_engine='easyocr'):
 
         # 4. Очистка текста
         cleaned_text = clean_text(raw_text)
+        print(cleaned_text)
         return {
             'processed_image': output_path,
             'cleaned_text': cleaned_text,

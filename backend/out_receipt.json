@@ -1,0 +1,26 @@
+{
+  "store": "Супермаркет ВК",
+  "date": "2023-04-25",
+  "time": "13:01",
+  "items": [
+    {
+      "name": "Хлеб",
+      "price": 40,
+      "quantity": 2,
+      "category": 0
+    },
+    {
+      "name": "Компот из сухофруктов",
+      "price": 22,
+      "quantity": 2,
+      "category": 0
+    },
+    {
+      "name": "KPacHoe море",
+      "price": 250,
+      "quantity": 1,
+      "category": 6
+    }
+  ],
+  "total": 2114
+}
